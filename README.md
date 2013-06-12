@@ -5,7 +5,7 @@ JavaScriptのシンプルなトゥイーンエンジン
 
 デモ
 ------
-http://www.knockknock.jp/
+http://knockknock-jp.github.com/tween/
 
 使い方
 ------
