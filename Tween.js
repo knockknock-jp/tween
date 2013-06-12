@@ -1,7 +1,7 @@
 (function () {
 
     /**
-     * JavaScriptのシンプルなトゥイーンエンジン2
+     * トゥイーン
      * @param target
      * @constructor
      */
