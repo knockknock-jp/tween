@@ -1,16 +1,10 @@
 # tween
 JavaScriptのシンプルなトゥイーンエンジン
 
-<<<<<<< HEAD
-デモ
-------
-http://knockknock-jp.github.com/tween/
-=======
 ## デモ
-[http://knockknock-jp.github.io/tween/]
+http://knockknock-jp.github.io/tween/
 
 ## 使い方
----------------------------------------
 オブジェクトのプロパティの値を現在の値から、指定した値まで、指定秒で、指定イージング関数を通して変化を与えつづけます。
 まずライブラリを読み込みます。
 
@@ -37,10 +31,9 @@ http://knockknock-jp.github.com/tween/
     });
 
 ## パブリックメソッド
----------------------------------------
 
 ### Tween()
-名前空間として*knockknock.jp*にTween関数を定義しています。まずはこちらを実行して、戻り値を変数に格納してください。
+名前空間としてknockknock.jpにTween関数を定義しています。まずはこちらを実行して、戻り値を変数に格納してください。
 
 #### 引数
 1. `{}` : 対象となるオブジェクト
@@ -74,7 +67,6 @@ http://knockknock-jp.github.com/tween/
 なし
 
 ## イージング関数
----------------------------------------
 
 * `knockknock.jp.Easing.linear`
 
@@ -131,7 +123,6 @@ http://knockknock-jp.github.com/tween/
 * `knockknock.jp.Easing.backEaseInOut`
 * `knockknock.jp.Easing.backEaseOut`
 * `knockknock.jp.Easing.backEaseOutIn`
->>>>>>> モジュールパターン適応とREADME整理
 
 ### Bounce
 * `knockknock.jp.Easing.bounceEaseIn`
