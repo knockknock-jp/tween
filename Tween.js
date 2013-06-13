@@ -1,26 +1,47 @@
 (function () {
 
+    // パッケージ作成
+    if (!window.knockknock) window.knockknock = {};
+    if (!window.knockknock.jp) window.knockknock.jp = {};
+
     /**
-     * トゥイーン
+     * JavaScriptのシンプルなトゥイーンエンジン
      * @param target
      * @constructor
      */
-    window.Tween = function (target) {
+    window.knockknock.jp.Tween = function (target) {
+
+        // ---------- プライベート変数 ---------- //
 
         var _target = target;
         var _intervalId;
         var _count;
         var _arr;
 
+        // ---------- コンストラクタ ---------- //
+
+
+        return {
+            play: play,
+            stop: stop
+        };
+
+        // ---------- パブリックメソッド ---------- //
+
         /**
          * 開始
          * @param property
          * @param parameter
          */
-        this.play = function (property, parameter) {
-            this.stop();
+        function play(property, parameter) {
+            stop();
             var _property = property;
             var _parameter = parameter;
+            var _duration = _parameter["duration"] || 1000;
+            var _easing = _parameter["easing"] || window.knockknock.jp.Easing.linear;
+            var _play = _parameter["play"] || null;
+            var _update = _parameter["update"] || null;
+            var _complete = _parameter["complete"] || null;
             _arr = [];
             for (var key in _property) {
                 _arr.push({
@@ -29,51 +50,56 @@
                     lastValue: _property[key] // 最終値
                 });
             }
+            // コールバック
+            if (_parameter && _play) _play({target: _target});
             // アニメーション秒数が設定してある場合
-            if (_parameter && _parameter["duration"] && 0 < _parameter["duration"]) {
-                if (!_parameter["easing"]) _parameter["easing"] = window.Easing.linear; // イージング関数
+            if (_parameter && _duration && 0 < _duration) {
                 _count = 0;
                 var scope = this;
-                this._intervalId = setInterval(function () {
+                _intervalId = setInterval(function () {
                     var length = _arr.length;
-                    for (var i = 0; i < length; i = i + 1) {
-                        if (_parameter["duration"] <= _count) {
+                    var i = 0, max;
+                    for (i = 0, max = length; i < max; i = i + 1) {
+                        if (_duration <= _count) {
                             _target[_arr[i].targetProperty] = _arr[i].lastValue;
                             // 停止
                             scope.stop();
                             // コールバック
-                            if (_parameter["on"]) _parameter["on"]({target: _target});
-                            if (_parameter["complete"]) _parameter["complete"]({target: _target});
+                            if (_update) _update({target: _target});
+                            if (_complete) _complete({target: _target});
                         } else {
                             var t = _count; // 現在の秒数
                             var b = _arr[i].firstValue; // 初期値
                             var c = _arr[i].lastValue - _arr[i].firstValue; // 目的値
-                            var d = _parameter["duration"]; // 完了までの秒数
-                            _target[_arr[i].targetProperty] = _parameter["easing"](t, b, c, d);
+                            var d = _duration; // 完了までの秒数
+                            _target[_arr[i].targetProperty] = _easing(t, b, c, d);
                             _count = _count + (1000 / 60);
                             // コールバック
-                            if (_parameter["on"]) _parameter["on"]({target: _target});
+                            if (_update) _update({target: _target});
                         }
                     }
                 }, 1000 / 60);
                 // アニメーション秒数が設定していない場合
             } else {
                 var length = _arr.length;
-                for (var i = 0; i < length; i = i + 1) {
+                var i = 0, max;
+                for (i = 0, max = length; i < max; i = i + 1) {
                     _target[_arr[i].targetProperty] = _arr[i].lastValue;
                 }
                 // コールバック
-                if (_parameter && _parameter["on"]) _parameter["on"]({target: _target});
-                if (_parameter && _parameter["complete"]) _parameter["complete"]({target: _target});
+                if (_parameter && _update) _update({target: _target});
+                if (_parameter && _complete) _complete({target: _target});
             }
-        };
+        }
 
         /**
          * 停止
          */
-        this.stop = function () {
-            clearInterval(this._intervalId);
-        };
+        function stop() {
+            clearInterval(_intervalId);
+        }
+
+        // ---------- プライベートメソッド ---------- //
 
     };
 
@@ -81,7 +107,7 @@
      * イージング関数
      * @type {{linear: Function, sineEaseIn: Function, sineEaseInOut: Function, sineEaseOut: Function, sineEaseOutIn: Function, quadraticEaseIn: Function, quadraticEaseInOut: Function, quadraticEaseOut: Function, quadraticEaseOutIn: Function, cubicEaseIn: Function, cubicEaseInOut: Function, cubicEaseOut: Function, cubicEaseOutIn: Function, quarticEaseIn: Function, quarticEaseInOut: Function, quarticEaseOut: Function, quarticEaseOutIn: Function, quinticEaseIn: Function, quinticEaseInOut: Function, quinticEaseOut: Function, quinticEaseOutIn: Function, exponentialEaseIn: Function, exponentialEaseInOut: Function, exponentialEaseOut: Function, exponentialEaseOutIn: Function, circularEaseIn: Function, circularEaseInOut: Function, circularEaseOut: Function, circularEaseOutIn: Function, elasticEaseIn: Function, elasticEaseInOut: Function, elasticEaseOut: Function, elasticEaseOutIn: Function, backEaseIn: Function, backEaseInOut: Function, backEaseOut: Function, backEaseOutIn: Function, bounceEaseIn: Function, bounceEaseInOut: Function, bounceEaseOut: Function, bounceEaseOutIn: Function}}
      */
-    window.Easing = {
+    window.knockknock.jp.Easing = {
 
         /**
          * Linear

@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<head>
+<title>knockknock-jp / tween / Tween.js</title>
+<style type="text/css">
+    body {
+        margin: 1em;
+        padding: 0;
+    }
+    h1 {
+        font-size: 1.4em;
+    }
+    h2 {
+        font-size: 1em;
+    }
+    pre {
+        font-size: 0.7em;
+        line-height: 1.4em;
+    }
+    header {
+        margin: 2em 0;
+    }
+    section {
+        margin: 2em 0;
+    }
+    hr {
+        border: solid 1px #000;
+    }
+    .box {
+        position: relative;
+        top: 0;
+        left: 0;
+        margin-bottom: 1em;
+        width: 100px;
+        height: 100px;
+        line-height: 100px;
+        text-align: center;
+        color: #FFF;
+        background-color: #000;
+    }
+    .btn {
+        margin-bottom: 1em;
+        width: 100px;
+        height: 3em;
+        line-height: 3em;
+    }
+    .div {
+        margin-bottom: 1em;
+    }
+
+</style>
+</head>
+<body>
+
+<header>
+    <h1>JavaScriptのシンプルなトゥイーンエンジン</h1>
+    <p>オブジェクトのプロパティの値を現在の値から、指定した値まで、指定秒で、指定イージング関数を通して変化を与えつづけます。</p>
+</header>
+<hr>
+<section>
+    <h2>基本</h2>
+    <p>値に変更を与えるためのオブジェクトとトゥイーンインスタンスを作成して、playメソッドを実行します。</p>
+    <pre>var a = document.getElementById("a");
+var b = document.getElementById("b");
+var status = document.getElementById("status");
+var tween = knockknock.jp.Tween({a:0, b:0});
+tween.play({
+    a: 100
+    b: -100
+},{
+    easing: knockknock.jp.Easing.sineEaseOut,
+    duration: 1000,
+    play: function(e){
+        status.value = "play";
+    },
+    update: function(e){
+        a.value = e.target.a;
+        b.value = e.target.b;
+    },
+    complete: function(e){
+        status.value = "complete";
+    }
+});</pre>
+    <div><input type="button" value="play" onclick="tweenPlay01();" class="btn"></div>
+    <div class="div">a : <input id="a" name="a" type="text" value="0"></div>
+    <div class="div">b : <input id="b" name="b" type="text" value="0"></div>
+    <div class="div">status : <input id="status" name="status" type="text" value=""></div>
+</section>
+<hr>
+<section>
+    <h2>トゥイーンアニメーションに応用</h2>
+    <p>変更が与えられる度に呼ばれるコールバック関数updateを利用してbox1を移動します。</p>
+    <pre>var box = document.getElementById("box");
+var tween = knockknock.jp.Tween({left:0});
+tween.play({
+    left: 500
+},{
+    easing: knockknock.jp.Easing.sineEaseOut,
+    duration: 1000,
+    update: function(e){
+        box.style.left = e.target.left + "px";
+    }
+});</pre>
+    <input type="button" value="play" onclick="tweenPlay02();" class="btn">
+    <div id="box" class="box">box</div>
+</section>
+<hr>
+
+<script type="text/javascript" src ="Tween.min.js"></script>
+<script type="text/javascript">
+
+// 基本
+(function () {
+    var tween = knockknock.jp.Tween({a:0, b:0});
+    var a = document.getElementById("a");
+    var b = document.getElementById("b");
+    var status = document.getElementById("status");
+    var flg = false;
+    window.tweenPlay01 = function (){
+        var target = (flg) ? 0 : 100;
+        flg = !flg;
+        tween.play({
+            a: target,
+            b: -target
+        },{
+            easing: knockknock.jp.Easing.sineEaseOut,
+            duration: 3000,
+            play: function(e){
+                status.value = "play";
+            },
+            update: function(e){
+                a.value = e.target.a;
+                b.value = e.target.b;
+            },
+            complete: function(e){
+                status.value = "complete";
+            }
+        });
+    }
+})();
+
+// トゥイーンアニメーションに応用
+(function () {
+    var tween = knockknock.jp.Tween({left:0});
+    var box = document.getElementById("box");
+    var flg = false;
+    window.tweenPlay02 = function (){
+        var target = (flg) ? 0 : 500;
+        flg = !flg;
+        tween.play({
+            left: target
+        },{
+            easing: knockknock.jp.Easing.sineEaseOut,
+            duration: 1000,
+            update: function(e){
+                box.style.left = e.target.left + "px";
+            }
+        });
+    }
+})();
+
+</script>
+</body>
+</html>
